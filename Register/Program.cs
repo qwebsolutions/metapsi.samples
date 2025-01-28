@@ -3,12 +3,15 @@ using Metapsi.Hyperapp;
 using Metapsi.Shoelace;
 using Metapsi.Syntax;
 using Microsoft.AspNetCore.Builder;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Metapsi.Dev;
 
 public static class LicenseExample
 {
+    private const int RepeatCount = 10;
+
     public class Model
     {
         public string LicenseText { get; set; } = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.";
@@ -36,7 +39,7 @@ public static class LicenseExample
                             {
                                 b.SetClass("flex flex-row flex-wrap");
                             },
-                            b.RegisterForm(model)));
+                            Enumerable.Range(0, RepeatCount).Select(x => b.RegisterForm(model)).ToArray()));
                                 
                 }).ToHtml());
         await webApp.RunAsync();
@@ -100,11 +103,11 @@ public static class LicenseExample
                             b.Text("Register"))),
                     b.Optional(
                         b.Get(model, x => x.Complete),
-                        b => b.AfterRegisterMessage(model)));
+                        b => b.AfterRegisterMessage()));
             });
     }
 
-    public static Var<IVNode> AfterRegisterMessage(this LayoutBuilder b, Var<Model> model)
+    public static Var<IVNode> AfterRegisterMessage(this LayoutBuilder b)
     {
         return b.HtmlDiv(
             b =>
