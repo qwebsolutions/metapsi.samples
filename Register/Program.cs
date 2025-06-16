@@ -10,8 +10,6 @@ namespace Metapsi.Dev;
 
 public static class LicenseExample
 {
-    private const int RepeatCount = 10;
-
     public class Model
     {
         public string LicenseText { get; set; } = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.";
@@ -22,10 +20,13 @@ public static class LicenseExample
     public static async Task Main()
     {
         var webApp = WebApplication.CreateBuilder().AddMetapsi().Build().UseMetapsi();
-        webApp.MapServerActions();
+        webApp.MapPost("/serverAction", async (Metapsi.ServerAction.Call call) =>
+        {
+            return await call.Run(new() { typeof(LicenseExample) });
+        });
         webApp.MapGet("/", () => Page.Result(new Model()));
         webApp.UseRenderer<Model>(
-            model => 
+            model =>
             // Server side rendering starts here
             HtmlBuilder.FromDefault(
                 b =>
@@ -39,9 +40,8 @@ public static class LicenseExample
                             {
                                 b.SetClass("flex flex-row flex-wrap");
                             },
-                            Enumerable.Range(0, RepeatCount).Select(x => b.RegisterForm(model)).ToArray()));
-                                
-                }).ToHtml());
+                            b.RegisterForm(model)));
+                }));
         await webApp.RunAsync();
     }
 
@@ -85,6 +85,7 @@ public static class LicenseExample
                                 b.SetDisabled(b.Get(model, x => x.Complete));
                                 b.SetSizeSmall();
                                 b.BindTo(model, x => x.Agreed);
+                                b.Log("Agreed", b.Get(model, x => x.Agreed));
                             },
                             b.Text("I agree to the terms and conditions")),
                         b.SlButton(
@@ -94,7 +95,9 @@ public static class LicenseExample
                                 b.SetDisabled(b.Get(model, x => !x.Agreed || x.Complete));
                                 b.OnClickAction(
                                     // Inline server-side call
-                                    b.CallServer(async (Model model) =>
+                                    b.CallServerAction(
+                                        b.Const("/serverAction"),
+                                        async (Model model) =>
                                     {
                                         model.Complete = true;
                                         return model;

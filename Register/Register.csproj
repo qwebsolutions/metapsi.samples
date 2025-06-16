@@ -6,7 +6,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Metapsi.Html" Version="$(MetapsiVersion)" />
+		<PackageReference Include="Metapsi.Web" Version="$(MetapsiVersion)" />
 		<PackageReference Include="Metapsi.Shoelace" Version="$(MetapsiVersion)" />
 	</ItemGroup>
 	

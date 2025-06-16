@@ -2,6 +2,7 @@
 using Metapsi.Hyperapp;
 using Metapsi.Sqlite;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +27,10 @@ public static class ServiceDocSample
     public static async Task Main()
     {
         var webApp = WebApplication.CreateBuilder().AddMetapsi().Build().UseMetapsi();
-        
+
         // Create db access queue
         var dbQueue = new ServiceDoc.DbQueue(new SqliteQueue(System.IO.Path.GetTempFileName()));
-        await webApp.UseDocs(
+        await webApp.MapGroup("docs").UseDocs(
             dbQueue,
             b =>
             {
