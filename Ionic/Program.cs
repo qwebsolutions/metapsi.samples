@@ -64,7 +64,7 @@ public static class Program
         b.HeadAppend(b.HtmlScriptModuleReference(new ListCustomersPage()));
         b.HeadAppend(b.HtmlScriptModuleReference(new ViewCustomerPage()));
         b.HeadAppend(b.HtmlScriptModuleReference(new EditCustomerModal()));
-        b.HeadAppend(b.HtmlTitle("Ionic quick-start sample"));
+        b.HeadAppend(b.HtmlTitle("Metapsi CRM"));
         //b.BodyAppend(
         //    b.Hyperapp(
         //        new Model(),
