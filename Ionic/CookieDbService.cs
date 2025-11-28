@@ -12,9 +12,20 @@ public class CookieDbService: IDbService
     public CookieDbService(HttpContext httpContext)
     {
         this.httpContext = httpContext;
+
+        var cookie = this.httpContext.Request.Cookies[CookieName];
+        if (cookie == null)
+        {
+            this.Customers = DefaultList;
+        }
+        else
+        {
+            var customersList = System.Text.Json.JsonSerializer.Deserialize<List<Customer>>(Uri.UnescapeDataString(cookie));
+            this.Customers = customersList.OrderBy(x => x.Name).ToList();
+        }
     }
 
-    private static List<Customer> DefaultList { get; set; } = new List<Customer>()
+    private List<Customer> DefaultList { get; set; } = new List<Customer>()
     {
         new Customer()
         {
@@ -26,10 +37,11 @@ public class CookieDbService: IDbService
         }
     };
 
+    private List<Customer> Customers { get; set; } = new List<Customer>();
 
-    private void SaveToCookie(IEnumerable<Customer> customers)
+    private void SaveToCookie()
     {
-        var serialized = Uri.EscapeDataString(System.Text.Json.JsonSerializer.Serialize(customers));
+        var serialized = Uri.EscapeDataString(System.Text.Json.JsonSerializer.Serialize(this.Customers));
 
         this.httpContext.Response.Cookies.Append(
             CookieName,
@@ -44,25 +56,20 @@ public class CookieDbService: IDbService
 
     public async Task<IEnumerable<Customer>> GetCustomers()
     {
-        var cookie = this.httpContext.Request.Cookies[CookieName];
-        if (cookie == null)
-        {
-            SaveToCookie(DefaultList);
-            return DefaultList;
-        }
-        else
-        {
-            var customersList = System.Text.Json.JsonSerializer.Deserialize<List<Customer>>(Uri.UnescapeDataString(cookie));
-            return customersList.OrderBy(x => x.Name);
-        }
+        return Customers;
     }
 
 
     public async Task SaveCustomer(Customer customer)
     {
-        var customers = (await this.GetCustomers()).ToList();
-        customers.RemoveAll(x => x.Id == customer.Id);
-        customers.Add(customer);
-        SaveToCookie(customers);
+        this.Customers.RemoveAll(x => x.Id == customer.Id);
+        this.Customers.Add(customer);
+        SaveToCookie();
+    }
+
+    public async Task DeleteCustomer(Customer customer)
+    {
+        this.Customers.RemoveAll(x => x.Id == customer.Id);
+        SaveToCookie();
     }
 }

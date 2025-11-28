@@ -162,11 +162,28 @@ public class ListCustomersPage: CustomElement<ListCustomersPage.Model>
                                         b =>
                                         {
                                             b.SetColorDanger();
-                                            b.OnClickAction((SyntaxBuilder b, Var<Model> model) =>
-                                            {
-                                                b.Remove(b.Get(model, x => x.Customers), customer);
-                                                return b.Clone(model);
-                                            });
+                                            b.OnClickAction(
+                                                b.CallServerAction(
+                                                    b.Const("/server-action"),
+                                                    customer,
+                                                    async (Model model, Customer customer, Services services) =>
+                                                    {
+                                                        await services.Db.DeleteCustomer(customer);
+                                                        model.Customers = (await services.Db.GetCustomers()).ToList();
+                                                        return model;
+                                                    },
+                                                    b.MakeAction((SyntaxBuilder b, Var<Model> _oldModel, Var<Model> model) =>
+                                                    {
+                                                        return b.MakeStateWithEffects(
+                                                            model,
+                                                            b => b.ToastControllerPresent(b =>
+                                                            {
+                                                                b.Set(x => x.message, "Customer removed");
+                                                                b.Set(x => x.swipeGesture, "vertical");
+                                                                b.Set(x => x.duration, 5000);
+                                                                b.Set(x => x.color, "primary");
+                                                            }));
+                                                    })));
                                         },
                                         b.IonIcon(
                                             b =>
