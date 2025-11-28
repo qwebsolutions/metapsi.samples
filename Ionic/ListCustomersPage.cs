@@ -58,7 +58,7 @@ public class ListCustomersPage: CustomElement<ListCustomersPage.Model>
     {
         return this.Root(b.IonHeader(
                 b.IonToolbar(
-                    b.IonTitle(b.Text("Ionic quick-start")),
+                    b.IonTitle(b.Text("Metapsi CRM")),
                     b.IonButtons(
                         b =>
                         {
