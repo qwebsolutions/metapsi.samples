@@ -22,7 +22,7 @@ public static class LicenseExample
         var webApp = WebApplication.CreateBuilder().AddMetapsi().Build().UseMetapsi();
         webApp.MapPost("/serverAction", async (Metapsi.ServerAction.Call call) =>
         {
-            return await call.Run(new() { typeof(LicenseExample) });
+            return await call.Run([typeof(LicenseExample) ]);
         });
         webApp.MapGet("/", () => Page.Result(new Model()));
         webApp.UseRenderer<Model>(

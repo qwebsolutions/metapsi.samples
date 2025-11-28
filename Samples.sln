@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceDoc", "ServiceDoc\Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarket", "StockMarket\StockMarket.csproj", "{0C6143A4-CDE6-292D-5511-DA0B93AA82A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ionic", "Ionic\Ionic.csproj", "{033EF845-E38C-BE25-E645-06D4D067AE80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0C6143A4-CDE6-292D-5511-DA0B93AA82A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C6143A4-CDE6-292D-5511-DA0B93AA82A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C6143A4-CDE6-292D-5511-DA0B93AA82A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{033EF845-E38C-BE25-E645-06D4D067AE80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{033EF845-E38C-BE25-E645-06D4D067AE80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{033EF845-E38C-BE25-E645-06D4D067AE80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{033EF845-E38C-BE25-E645-06D4D067AE80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

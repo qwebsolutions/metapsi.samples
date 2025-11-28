@@ -85,13 +85,13 @@ public static class Program
             return HtmlBuilder.FromDefault(
                 b =>
                 {
-                    b.UseWebComponentsFadeIn();
                     b.HeadAppend(b.HtmlTitle("Market data, absolutely real time for sure ..."));
                     b.BodyAppend(
                         b.Hyperapp<MarketData>(
                             InitializeClientSideApp,
                             RenderClientSideApp,
                             ListenForUpdates));
+                    b.BodyAppend(b.WebComponentsFadeInScript());
                 });
         });
 

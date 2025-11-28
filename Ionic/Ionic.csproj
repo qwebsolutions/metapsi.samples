@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Metapsi.Web" Version="$(MetapsiVersion)" />
+		<PackageReference Include="Metapsi.Ionic" Version="$(MetapsiVersion)" />
+	</ItemGroup>
+
+</Project>
