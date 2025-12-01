@@ -45,15 +45,23 @@ public static class Program
 
         webApp.MapPost("/server-action", async (HttpContext context, ServerAction.Call serverCall) =>
         {
-            return await serverCall.Run(
-                [
-                typeof(ListCustomersPage),
-                typeof(EditCustomerModal)
-                ],
-                new Services()
-                {
-                    Db = new CookieDbService(context)
-                });
+            try
+            {
+                return Results.Ok(
+                    await serverCall.Run(
+                        [
+                        typeof(ListCustomersPage),
+                        typeof(EditCustomerModal)
+                        ],
+                        new Services()
+                        {
+                            Db = new CookieDbService(context)
+                        }));
+            }
+            catch(Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }).AllowAnonymous();
 
         await webApp.RunAsync();

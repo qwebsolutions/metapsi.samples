@@ -64,6 +64,18 @@ public class EditCustomerModal : CustomElement<EditCustomerModal.Model, EditCust
                                                                 b.Set(x => x.color, "success");
                                                             }),
                                                             b => b.DispatchEvent(b.Window(), b.Const(ListCustomersPage.ReloadCustomersEventName)));
+                                                    }),
+                                                    b.MakeAction((SyntaxBuilder b, Var<Model> model, Var<Error> error) =>
+                                                    {
+                                                        return b.MakeStateWithEffects(
+                                                            model,
+                                                            b => b.ToastControllerPresent(b =>
+                                                            {
+                                                                b.Set(x => x.message, b.Get(error, x => x.message));
+                                                                b.Set(x => x.swipeGesture, "vertical");
+                                                                b.Set(x => x.duration, 5000);
+                                                                b.Set(x => x.color, "danger");
+                                                            }));
                                                     })));
                                         });
                                 });

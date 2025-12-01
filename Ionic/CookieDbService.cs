@@ -42,6 +42,8 @@ public class CookieDbService: IDbService
     private void SaveToCookie()
     {
         var serialized = Uri.EscapeDataString(System.Text.Json.JsonSerializer.Serialize(this.Customers));
+        if (serialized.Length > 4000)
+            throw new Exception("Cannot save: maximum size exceeded");
 
         this.httpContext.Response.Cookies.Append(
             CookieName,

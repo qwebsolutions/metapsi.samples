@@ -13,9 +13,6 @@ using Microsoft.AspNetCore.Routing;
 using Metapsi.SignalR;
 using Microsoft.AspNetCore.Http;
 using Metapsi.Shoelace;
-using Metapsi.Web;
-using System.Net.Http;
-using System.Xml.Linq;
 
 public class Entry
 {
