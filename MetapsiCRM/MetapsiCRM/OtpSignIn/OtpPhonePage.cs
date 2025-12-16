@@ -5,7 +5,7 @@ using Metapsi.Syntax;
 
 namespace MetapsiCRM;
 
-public class LoginPage : CustomElement<LoginPage.Model>
+public class OtpPhonePage : CustomElement<OtpPhonePage.Model>
 {
     public class Model
     {
@@ -26,13 +26,10 @@ public class LoginPage : CustomElement<LoginPage.Model>
             b.IonContent(
                 b =>
                 {
-                    //b.AddClass("ion-padding");
                 },
                 b.HtmlDiv(
                     b =>
                     {
-
-                        //b.AddStyle("background-color", "green");
                         b.FlexRow();
                         b.HeightFull();
                         b.AlignItemsCenter();
@@ -42,31 +39,15 @@ public class LoginPage : CustomElement<LoginPage.Model>
                         b=>
                         {
                             b.AddStyle("max-width", "500px");
-                            //b.AddStyle("background-color", "red");
                         },
                     b.HtmlDiv(
                         b =>
                         {
                             b.FlexColumn();
-                            //b.AddStyle("background-color", "green");
-                            //b.AddStyle("gap", "2rem");
-                            //b.AddStyle("padding", "10%");
-                            //b.AlignItemsCenter();
                         },
                         b.WelcomeMessage(),
                         b.LoginPhoneImage(),
                         b.OtpCodeNote(),
-                        //b.HtmlDiv(
-                        //    b=>
-                        //    {
-                        //        b.AddStyle("padding", "30px 20px");
-                        //    },
-                        //    b.IonText(
-                        //        b=>
-                        //        {
-                        //            b.SetColorMedium();
-                        //        },
-                        //        b.Text("We will not send a code to your phone, but pretend we did, so enter whatever here, it's just a sample"))),
                         b.HtmlDiv(
                             b=>
                             {
@@ -88,18 +69,6 @@ public class LoginPage : CustomElement<LoginPage.Model>
                                         b.SetTypeTel();
                                         b.BindTo(model, x => x.Phone);
                                     })
-                                //b.IonButton(
-                                //    b =>
-                                //    {
-                                //        b.SetSlot(IonItem.Slot.End);
-                                //        b.SetFillClear();
-                                //    },
-                                //    b.IonIcon(
-                                //        b =>
-                                //        {
-                                //            b.SetName("send-outline");
-                                //            b.SetSlot(IonButton.Slot.IconOnly);
-                                //        }))
                                 )),
                         b.IonButton(
                             b =>
@@ -118,36 +87,13 @@ public class LoginPage : CustomElement<LoginPage.Model>
                             },
                             b.Text("Continue"))))))));
     }
-
-
-    //private Var<IVNode> WelcomeMessage(LayoutBuilder b)
-    //{
-    //    return b.HtmlDiv(
-    //        b =>
-    //        {
-    //            b.FlexColumn();
-    //        },
-    //        b.HtmlH3(
-    //            b.IonText(
-    //                b =>
-    //                {
-    //                    b.SetColorMedium();
-    //                },
-    //                b.Text("Welcome to"))),
-    //        b.HtmlH2(
-    //            b.IonText(
-    //                b =>
-    //                {
-    //                    b.SetColorDark();
-    //                },
-    //                b.Text("Metapsi CRM"))));
-    //}
 }
 
 file static class LoginExtensions
 {
     public static Var<IVNode> LoginPhoneImage(this LayoutBuilder b)
     {
+        // https://undraw.co
         var otpPng = b.AddEmbeddedResourceMetadata(typeof(LoginExtensions).Assembly, "undraw_mobile-log-in_0n4q.png");
 
         return b.HtmlDiv(
@@ -162,13 +108,8 @@ file static class LoginExtensions
                 {
                     b.AddStyle("width", "300px");
                     b.AddStyle("margin", "-75px 0px 0px 0px");
-                    
+
                     b.SetSrc(otpPng.GetDefaultHttpPath());
-                    //b.AddStyle("max-width", "300px");
-                    //b.AddStyle("margin", "-20px");
-                    //b.AddStyle("padding", "10%");
-                    //b.AddStyle("background-color", "var(--ion-color-light)");
-                    //b.AddStyle("border-radius", "20px");
                 }));
     }
 

@@ -3,28 +3,9 @@ using Metapsi.Html;
 using Metapsi.Hyperapp;
 using Metapsi.Ionic;
 using Metapsi.Syntax;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using System.Security.Claims;
 
 namespace MetapsiCRM;
-
-public class SignInInput
-{
-    public string Phone { get; set; }
-    public string RequestCode { get; set; }
-    public string AccessCode { get; set; }
-}
-
-public class SignInOutput
-{
-    public bool Success { get; set; }
-    public string Message { get; set; }
-}
-
 
 public class OtpCodePage: CustomElement<OtpCodePage.Model>
 {
@@ -36,9 +17,7 @@ public class OtpCodePage: CustomElement<OtpCodePage.Model>
 
     public override Var<HyperType.StateWithEffects> OnInit(SyntaxBuilder b, Var<Element> element)
     {
-        b.Log("element", element);
         var phone = b.GetProperty<string>(element, b.Const("phone"));
-        b.Log("phone", phone);
         return b.MakeStateWithEffects(b.NewObj<Model>(
             b =>
             {
@@ -63,7 +42,6 @@ public class OtpCodePage: CustomElement<OtpCodePage.Model>
                         b.FlexColumn();
                         b.AlignItemsCenter();
                         b.JustifyContentCenter();
-                        //b.HeightFull();
                     },
                     b.HtmlDiv(
                         b =>
@@ -108,53 +86,5 @@ public class OtpCodePage: CustomElement<OtpCodePage.Model>
                             }));
                         },
                         b.Text("Access"))))));
-    }
-}
-
-public static class OtpSignInExtensions
-{
-    public static void MapOtpSignIn(this IEndpointRouteBuilder endpoint, Func<HttpContext, Task<Services>> getServices)
-    {
-        endpoint.MapPost("/sign-in", async (HttpContext httpContext, SignInInput signInInput) =>
-        {
-            if (string.IsNullOrWhiteSpace(signInInput.Phone))
-            {
-                return new SignInOutput()
-                {
-                    Success = false,
-                    Message = "Failed to sign in!"
-                };
-            }
-
-            var user = await (await getServices(httpContext)).Users.GetUserByPhone(signInInput.Phone);
-            if (user == null)
-            {
-                return new SignInOutput()
-                {
-                    Success = false,
-                    Message = "Failed to sign in!"
-                };
-            }
-
-            await httpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(
-                    new ClaimsIdentity(
-                        [
-                        new Claim(ClaimTypes.NameIdentifier, user.Id),
-                        ],
-                        CookieAuthenticationDefaults.AuthenticationScheme)));
-
-            return new SignInOutput()
-            {
-                Success = true,
-                Message = $"Welcome {signInInput.Phone}!"
-            };
-        });
-
-        endpoint.MapPost("/sign-out", async (HttpContext httpContext) =>
-        {
-            await httpContext.SignOutAsync();
-        });
     }
 }

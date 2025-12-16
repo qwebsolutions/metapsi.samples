@@ -56,7 +56,7 @@ public static partial class Homepage
         b.HeadAppend(b.HtmlScriptModuleReference(new ListCustomersPage()));
         b.HeadAppend(b.HtmlScriptModuleReference(new ViewCustomerPage()));
         b.HeadAppend(b.HtmlScriptModuleReference(new EditCustomerModal()));
-        b.HeadAppend(b.HtmlScriptModuleReference(new LoginPage()));
+        b.HeadAppend(b.HtmlScriptModuleReference(new OtpPhonePage()));
         b.HeadAppend(b.HtmlScriptModuleReference(new OtpCodePage()));
         b.HeadAppend(b.HtmlTitle("Metapsi CRM"));
 
@@ -150,6 +150,6 @@ public static partial class Homepage
         return b.If(
             b.HasObject(b.Get(model, x => x.User.Id)),
             b => b.IonNavSetRootEffect<ListCustomersPage>(),
-            b => b.IonNavSetRootEffect<LoginPage>());
+            b => b.IonNavSetRootEffect<OtpPhonePage>());
     }
 }

@@ -41,7 +41,7 @@ public static partial class Program
                     b.AddModule(new EditCustomerModal().ModulePath, () => new EditCustomerModal().Module);
                     b.AddModule(new ViewCustomerPage().ModulePath, () => new ViewCustomerPage().Module);
                     b.AddModule(new ListCustomersPage().ModulePath, () => new ListCustomersPage().Module);
-                    b.AddModule(new LoginPage().ModulePath, () => new LoginPage().Module);
+                    b.AddModule(new OtpPhonePage().ModulePath, () => new OtpPhonePage().Module);
                     b.AddModule(new OtpCodePage().ModulePath, () => new OtpCodePage().Module);
                 }
                 else
