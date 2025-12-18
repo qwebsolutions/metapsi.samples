@@ -20,7 +20,8 @@ class Program
             {
                 Customers = dbService,
                 Users = dbService,
-                User = await httpContext.GetUser(dbService)
+                User = await httpContext.GetUser(dbService),
+                UiMode = httpContext.UiMode()
             };
         });
 

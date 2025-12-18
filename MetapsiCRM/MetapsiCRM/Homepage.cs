@@ -14,18 +14,14 @@ public static partial class Homepage
     public class Model
     {
         public User User { get; set; } = new User();
+        public string IonicMode { get; set; } = "md";
     }
 
     public static void MapHomepage(this IEndpointRouteBuilder endpoint, Func<HttpContext, Task<Services>> getServices)
     {
         endpoint.MapGet("/", async (HttpContext httpContext) =>
         {
-            var services = await getServices(httpContext);
-
-            var model = new Model()
-            {
-                User = services.User
-            };
+            var model = await GetHomepageModel(await getServices(httpContext));
 
             var html = HtmlBuilder.FromDefault(
                 b =>
@@ -45,7 +41,8 @@ public static partial class Homepage
     {
         var model = new Model()
         {
-            User = services.User
+            User = services.User,
+            IonicMode = services.UiMode
         };
 
         return model;
@@ -59,20 +56,7 @@ public static partial class Homepage
         b.HeadAppend(b.HtmlScriptModuleReference(new OtpPhonePage()));
         b.HeadAppend(b.HtmlScriptModuleReference(new OtpCodePage()));
         b.HeadAppend(b.HtmlTitle("Metapsi CRM"));
-
-        //b.HeadAppend(b.HtmlScriptModule(
-        //    b =>
-        //    {
-        //        b.AddEventListener(b.Window(), b.Const("appload"), b.Def((SyntaxBuilder b) =>
-        //        {
-        //            b.Log("appload!");
-        //        }));
-
-        //        b.AddEventListener(b.Document(), b.Const("ionViewDidEnter"), b.Def((SyntaxBuilder b) =>
-        //        {
-        //            b.Log("ionViewDidEnter!");
-        //        }));
-        //    }));
+        b.Document.Body.SetAttribute("mode", model.IonicMode);
 
         b.BodyAppend(
             b.Hyperapp<Model>(
@@ -84,23 +68,7 @@ public static partial class Homepage
                             initModel,
                             b.SetNavRoot(initModel)));
                 },
-                (b, model) => b.IonApp(b.IonNav(
-                    b=>
-                    {
-                        //b.OnIonNavDidChange(
-                        //    b.MakeAction((SyntaxBuilder b, Var<Model> model, Var<Event> e) =>
-                        //    {
-                        //        b.Log("OnIonNavDidChange", e);
-                        //        return b.MakeStateWithEffects(
-                        //            model,
-                        //            b =>
-                        //            {
-                        //                var otpPhone = b.QuerySelector("#id-otp-phone");
-                        //                b.Log(otpPhone);
-                        //                b.CallOnObject(otpPhone, IonInput.Method.SetFocus);
-                        //            });
-                        //    }));
-                    })),
+                (b, model) => b.IonApp(b.IonNav()),
                 (b, model) =>
                 {
                     return b.Listen(

@@ -25,7 +25,8 @@ public static partial class Program
             {
                 Customers = new CookieDbService(httpContext),
                 Users = new IdentityService(),
-                User = await httpContext.GetUser(identityService)
+                User = await httpContext.GetUser(identityService),
+                UiMode = httpContext.UiMode()
             };
         }).RunAsync();
     }

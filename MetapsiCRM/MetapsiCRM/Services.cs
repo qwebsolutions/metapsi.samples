@@ -24,6 +24,7 @@ public class Services
     public ICustomersDbService Customers { get; set; }
     public IUsersDbService Users { get; set; }
     public User User { get; set; }
+    public string UiMode { get; set; } = "md";
 }
 
 public static class ServicesExtensions
@@ -44,5 +45,16 @@ public static class ServicesExtensions
         }
 
         return new User();
+    }
+
+    public static string UiMode(this HttpContext httpContext)
+    {
+        var mode = httpContext.Request.Query["mode"];
+        if (string.IsNullOrWhiteSpace(mode))
+            return "md";
+        var first = mode.FirstOrDefault();
+        if (first.ToLowerInvariant() == "ios")
+            return "ios";
+        return "md";
     }
 }
