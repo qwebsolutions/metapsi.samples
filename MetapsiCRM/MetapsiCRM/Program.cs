@@ -52,7 +52,14 @@ public static partial class Program
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
         builder.Services.AddAuthorization();
 
+        builder.Services.AddWindowsService();
+        builder.Host.UseWindowsService();
+
+        builder.Services.AddSystemd();
+        builder.Host.UseSystemd();
+
         var webApp = builder.Build().UseMetapsi();
+        
         webApp.UseAuthentication();
         webApp.UseAuthorization();
 
