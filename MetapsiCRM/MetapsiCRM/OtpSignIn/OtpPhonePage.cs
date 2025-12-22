@@ -5,8 +5,27 @@ using Metapsi.Syntax;
 
 namespace MetapsiCRM;
 
+/// <summary>
+/// The screen for 'one time password' phone input
+/// </summary>
+/// <remarks> It's a custom element. Ionic uses these for navigation between different application screens.</remarks>
 public class OtpPhonePage : CustomElement<OtpPhonePage.Model>
 {
+    // This custom element is written in a reusability-centric way, so it can be added to any html page like this:
+    // <otp-phone-page />
+    // Changing this name does not break anything, because the custom element is referenced through the class itself, not the tag.
+    // Find references and notice it is added like this: b.HtmlScriptModuleReference(new OtpPhonePage())
+    // and used like this: b.IonNavSetRootEffect<OtpPhonePage>()
+    // This keeps the tag usage in sync with the tag definition
+    public OtpPhonePage()
+    {
+        // The tag name is explicitly declared in the constructor. This avoids any ambiguity in case you want to add it to a page
+        this.Tag = "otp-phone-page";
+    }
+
+    /// <summary>
+    /// The model for the client-side app running inside the custom element
+    /// </summary>
     public class Model
     {
         public string Phone { get; set; } = "+1234567890";
@@ -18,7 +37,6 @@ public class OtpPhonePage : CustomElement<OtpPhonePage.Model>
             b.NewObj<Model>(),
             b.FocusIonInputEffect("id-otp-phone"));
     }
-
 
     public override IRootControl OnRender(LayoutBuilder b, Var<Model> model)
     {

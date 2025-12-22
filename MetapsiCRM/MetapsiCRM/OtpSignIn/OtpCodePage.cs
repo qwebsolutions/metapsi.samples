@@ -7,21 +7,27 @@ using Microsoft.AspNetCore.Http;
 
 namespace MetapsiCRM;
 
+
 public class OtpCodePage: CustomElement<OtpCodePage.Model>
 {
     public class Model
     {
         public string Phone { get; set; } = string.Empty;
         public string Code { get; set; } = "1234";
+        public string AccessNote { get; set; } = "Enter the access code you received through SMS.. or WhatsApp .. or maybe mail?";
+        public string SignInUrl { get; set; } = "/sign-in";
     }
 
     public override Var<HyperType.StateWithEffects> OnInit(SyntaxBuilder b, Var<Element> element)
     {
         var phone = b.GetProperty<string>(element, b.Const("phone"));
+        var signInUrl = b.GetProperty<string>(element, "sign-in-url");
+
         return b.MakeStateWithEffects(b.NewObj<Model>(
             b =>
             {
                 b.Set(x => x.Phone, phone);
+                b.If(b.HasValue(signInUrl), b => b.Set(x => x.SignInUrl, signInUrl));
             }),
             b.FocusIonInputEffect("id-otp-code"));
     }
@@ -54,22 +60,22 @@ public class OtpCodePage: CustomElement<OtpCodePage.Model>
                             b.AddClass("ion-text-center");
                             b.SetColorMedium();
                         },
-                        b.Text("Enter the access code you received through SMS.. or WhatsApp .. or maybe mail?")),
+                        b.Text(b.Get(model, x => x.AccessNote))),
                     b.IonInputOtp(
                         b =>
                         {
                             b.SetId("id-otp-code");
-                            b.SetValue(b.Get(model, x => x.Code));
+                            b.BindTo(model, x => x.Code);
                         }),
                     b.IonButton(
-                        b=>
+                        b =>
                         {
                             b.OnClickAction(b.MakeAction((SyntaxBuilder b, Var<Model> model) =>
                             {
                                 return b.MakeStateWithEffects(
                                     model,
                                     b.PostJsonEffect<Model, SignInInput, SignInOutput>(
-                                        b.Const("/sign-in"),
+                                        b.Get(model, x => x.SignInUrl),
                                         b.NewObj<SignInInput>(
                                             b =>
                                             {

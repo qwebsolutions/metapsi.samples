@@ -5,8 +5,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Metapsi.Web" Version="0.30.3" />
-		<PackageReference Include="Metapsi.Ionic" Version="0.30.3" />
+		<PackageReference Include="Metapsi.Web" Version="0.30.4" />
+		<PackageReference Include="Metapsi.Ionic" Version="0.30.4" />
 	</ItemGroup>
 
 	<ItemGroup>

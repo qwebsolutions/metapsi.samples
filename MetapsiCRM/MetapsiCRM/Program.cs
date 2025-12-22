@@ -50,12 +50,14 @@ public static partial class Program
             });
 
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+        builder.Services.AddAuthorization();
 
         var webApp = builder.Build().UseMetapsi();
         webApp.UseAuthentication();
+        webApp.UseAuthorization();
 
         webApp.MapHomepage(getServices);
-        
+
         webApp.MapPost("/server-action", async (HttpContext context, ServerAction.Call serverCall) =>
         {
             try
@@ -73,7 +75,7 @@ public static partial class Program
             {
                 return Results.Problem(ex.Message);
             }
-        }).AllowAnonymous();
+        }).RequireAuthorization();
 
         webApp.MapOtpSignIn(getServices);
 
