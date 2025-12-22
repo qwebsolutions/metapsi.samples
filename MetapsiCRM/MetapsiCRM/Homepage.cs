@@ -83,34 +83,6 @@ public static partial class Homepage
                                 (b, dispatch) =>
                                 {
                                     b.LocationReload(b.Get(b.Window(), x => x.location));
-
-                                    //var ionNav = b.QuerySelector("ion-nav");
-                                    //b.If(
-                                    //    b.HasObject(ionNav),
-                                    //    b =>
-                                    //    {
-                                    //        var popPromise = b.CallOnObject<Promise>(ionNav, IonNav.Method.PopToRoot);
-                                    //        b.PromiseThen(
-                                    //            popPromise,
-                                    //            (SyntaxBuilder b, Var<object> _) =>
-                                    //            {
-                                    //                b.Dispatch(
-                                    //                    dispatch, 
-                                    //                    b.CallServerAction<Model, Services>(
-                                    //                        b.Const("/server-action"),
-                                    //                        async (Model model, Services services) =>
-                                    //                        {
-                                    //                            return await services.GetHomepageModel();
-                                    //                        },
-                                    //                        b.MakeAction((SyntaxBuilder b, Var<Model> oldModel, Var<Model> model) =>
-                                    //                        {
-                                    //                            return b.MakeStateWithEffects(
-                                    //                                model,
-                                    //                                b.SetNavRoot(model));
-                                    //                        }),
-                                    //                        b.AlertOnException<Model>()));
-                                    //            });
-                                    //    });
                                 });
                         }));
                 })

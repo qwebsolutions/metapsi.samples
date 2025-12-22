@@ -5,8 +5,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Metapsi.Web" Version="0.30.4" />
-		<PackageReference Include="Metapsi.Ionic" Version="0.30.4" />
+		<PackageReference Include="Metapsi.Web" Version="$(MetapsiVersion)" />
+		<PackageReference Include="Metapsi.Ionic" Version="$(MetapsiVersion)" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -15,7 +15,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 	</PropertyGroup>
 
 </Project>

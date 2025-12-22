@@ -2,8 +2,8 @@
 <Project>
 
   <PropertyGroup>
-  	<MetapsiVersion>0.29.0</MetapsiVersion>
-	<MetapsiServiceVersion>0.6.4</MetapsiServiceVersion>
+  	<MetapsiVersion>0.30.4</MetapsiVersion>
+	<MetapsiServiceVersion>0.10.3</MetapsiServiceVersion>
   </PropertyGroup>
 
 </Project>
