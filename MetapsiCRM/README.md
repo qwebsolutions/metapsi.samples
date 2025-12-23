@@ -1,4 +1,4 @@
-# METAPSI CRM - An Ionic-based Metapsi sample
+# METAPSI CRM - Ionic-based Metapsi sample
 
 **<span style="color: red;">(in progress)</span>**
 
@@ -145,4 +145,4 @@ b.Set(x => x.breakpoints, [0, 1]);
 b.Set(x => x.initialBreakpoint, 1);
 ```
 
-- Otherwise, add an ion-button that calls `b.ModalControllerDismiss()`
+- Otherwise, add an ion-button that calls `b.ModalControllerDismiss()` to close it
