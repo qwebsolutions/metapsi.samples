@@ -29,3 +29,41 @@ This sample showcases mobile-app-like screen navigation (go to detail, back, mod
 - `dotnet pack` this to generate a nuget
 - Reference the nuget in external projects you want to integrate with
 - This allows type-safe interoperability
+
+
+### Serve HTML
+
+In this sample: Homepage.MapHomepage.
+
+- Map a GET async handler: 
+```csharp
+endpoint.MapGet("/route/{parameter}", async (HttpContext httpContext, string parameter) => 
+{
+    var model = await LoadModel(parameter);
+    
+    var html = HtmlBuilder.FromDefault(
+        b =>
+        {
+            b.Render(model);
+        });
+    await httpContext.WriteHtmlDocumentResponse(html);
+}
+```
+- Load the page model with an async call
+- Initialize an `HtmlBuilder`
+- Create one (or more, for nested calls) extension methods to transform that model into HTML. The methods on HtmlBuilder are **EXACT EQUIVALENTS** of the HTML tags. 
+
+```C#
+private static void Render(this HtmlBuilder b, Model model) 
+{
+    b.HeadAppend(b.HtmlTitle(...));
+    b.BodyAppend(b.HtmlDiv(...));
+}
+```
+
+- Write the resulting document to the HTTP response
+
+### Render client-side
+
+- The HTML served by the server also contains `<script>` tags appended with `b.BodyAppend(b.HtmlScript(...))`
+- One or more of these script tags might instantiate a virtual DOM

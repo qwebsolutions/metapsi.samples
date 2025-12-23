@@ -32,11 +32,6 @@ public static partial class Homepage
                 });
             await httpContext.WriteHtmlDocumentResponse(html);
         });
-
-        endpoint.MapGet("/get-model", async (HttpContext httpContext) =>
-        {
-            return await GetHomepageModel(await getServices(httpContext));
-        });
     }
 
     public static async Task<Model> GetHomepageModel(this Services services)
