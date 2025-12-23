@@ -1,6 +1,10 @@
 # METAPSI CRM - An Ionic-based Metapsi sample
 
-<span style="color: red;">(in progress)</span>
+**<span style="color: red;">(in progress)</span>**
+
+[See it running on metapsi.dev](https://metapsi.dev/sample-crm)
+
+[Repository](https://github.com/qwebsolutions/metapsi.samples/tree/main/MetapsiCRM)
 
 This sample showcases mobile-app-like screen navigation (go to detail, back, modal), UI model binding, API calls, direct Metapsi server calls. It is implemented using the multi-project approach. 
 
@@ -33,7 +37,7 @@ This sample showcases mobile-app-like screen navigation (go to detail, back, mod
 
 ### Serve HTML
 
-In this sample: Homepage.MapHomepage.
+[In this sample: Homepage.MapHomepage](https://github.com/qwebsolutions/metapsi.samples/blob/main/MetapsiCRM/MetapsiCRM/Homepage.cs#L48)
 
 - Map a GET async handler: 
 ```csharp
@@ -65,5 +69,80 @@ private static void Render(this HtmlBuilder b, Model model)
 
 ### Render client-side
 
+[In this sample: `b.Hyperapp<Model>(...)`](https://github.com/qwebsolutions/metapsi.samples/blob/main/MetapsiCRM/MetapsiCRM/Homepage.cs#L58)
+
 - The HTML served by the server also contains `<script>` tags appended with `b.BodyAppend(b.HtmlScript(...))`
-- One or more of these script tags might instantiate a virtual DOM
+- One or more of these script tags might handle client-side rendering
+- In Metapsi this is handled through [Hyperapp](https://github.com/jorgebucaran/hyperapp)
+
+```csharp
+b.BodyAppend(
+    b.Hyperapp<Model>(
+        model,
+        (b, model) => b.IonApp(...)));
+```
+
+### Create custom element
+
+- Create a class that inherits `CustomElement<TModel>`
+- Override `OnInit` - the first action to be performed when the element is created. Here you can use the attributes on the element as parameters of the initialization process.
+- Override `OnRender` - the virtual DOM refresh function. This *must* return `this.Root`
+- To serve it as a JavaScript module:
+
+```csharp
+builder.Services.AddJsModules(
+    b =>
+    {
+        b.AddModule(new MyCustomElement().ModulePath, () => new MyCustomElement().Module);
+    });
+```
+This works with hot reload, as the constructor is called for each request. To auto-register:
+
+```csharp
+builder.Services.AddJsModules(
+    b =>
+    {
+        b.AutoRegisterFrom(typeof(Program).Assembly);
+    });
+```
+
+You can also [combine hot reload / auto-register](https://github.com/qwebsolutions/metapsi.samples/blob/main/MetapsiCRM/MetapsiCRM/Program.cs#L35)
+
+### Improve custom-element type-safety
+
+If you inherit from `CustomElement<TModel>` you can use it in any technology, in any web-page. If you know for sure that the element will only be used in your own Ionic projects, you can inherit from
+`CustomElement<TModel, TProps>`. This allows you to pass an actual initialization object.
+
+- Inherit from `CustomElement<TModel, TProps>`
+- Override `OnInitProps` - initializes the control based on the passed-in object
+- Override `OnRender`
+
+
+### Navigate between app screens with Ionic
+
+- Render the application as just a simple `ion-nav`
+
+```csharp
+(b, model) => b.IonApp(b.IonNav())
+```
+
+- Create the screens as custom elements
+- Navigate to an app screen with `b.IonNavPushEffect<TCustomElement>(b=> { ... })`
+- To go back it's enough to render a `<ion-back-button>` in the new screen
+
+```csharp
+b.IonToolbar(b.IonButtons(b.IonBackButton()))
+```
+
+### Open modals
+
+- Create the modals as custom elements
+- Show a modal with `b.ModalControllerPresentEffect<TCustomElement>`
+- To enable the collapse of the modal with a vertical swipe gesture:
+
+```csharp
+b.Set(x => x.breakpoints, [0, 1]);
+b.Set(x => x.initialBreakpoint, 1);
+```
+
+- Otherwise, add an ion-button that calls `b.ModalControllerDismiss()`
